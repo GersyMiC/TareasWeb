@@ -1,14 +1,28 @@
 // controllers/tareaController.js
+const { Op } = require('sequelize');
 const { Tarea, Curso } = require('../models');
 
 exports.list = async (req, res) => {
   try {
-    // Obtener todas las tareas con su curso asociado, ordenadas por fecha de vencimiento
+    const filter = req.query.filter;   // 'pendientes', 'completadas', 'vencidas' o undefined
+    const where = {};
+
+    if (filter === 'pendientes') {
+      where.completada = false;
+    } else if (filter === 'completadas') {
+      where.completada = true;
+    } else if (filter === 'vencidas') {
+      where.completada = false;
+      where.fecha_vencimiento = { [Op.lt]: new Date() };
+    }
+
     const tareas = await Tarea.findAll({
+      where,
       include: [{ model: Curso, as: 'curso' }],
       order: [['fecha_vencimiento', 'ASC']],
     });
-    res.render('index', { tareas });
+
+    res.render('index', { tareas, filter });
   } catch (error) {
     console.error('Error al listar tareas:', error);
     res.status(500).send('Error al obtener tareas');

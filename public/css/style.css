@@ -100,3 +100,18 @@ form button {
 form button:hover {
   background: #218838;
 }
+
+/* estilos para filtros */
+nav.filtros {
+  margin-bottom: 16px;
+}
+nav.filtros a {
+  margin-right: 12px;
+  text-decoration: none;
+  color: #007bff;
+}
+nav.filtros a.activo {
+  font-weight: bold;
+  color: #0056b3;
+}
+

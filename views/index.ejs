@@ -1,3 +1,11 @@
+<% /* filtros de tareas */ %>
+<nav class="filtros">
+  <a href="/"                 class="<%= !filter ? 'activo' : '' %>">Todas</a>
+  <a href="/?filter=pendientes"   class="<%= filter==='pendientes' ? 'activo' : '' %>">Pendientes</a>
+  <a href="/?filter=completadas"  class="<%= filter==='completadas' ? 'activo' : '' %>">Completadas</a>
+  <a href="/?filter=vencidas"     class="<%= filter==='vencidas' ? 'activo' : '' %>">Vencidas</a>
+</nav>
+
 <table>
   <thead>
     <tr>
