@@ -1,0 +1,59 @@
+<form action="<%= action %>" method="post">
+  <div>
+    <label for="titulo">Título:</label><br>
+    <input
+      type="text"
+      id="titulo"
+      name="titulo"
+      value="<%= tarea.titulo || '' %>"
+      required
+    >
+  </div>
+
+  <div>
+    <label for="descripcion">Descripción:</label><br>
+    <textarea
+      id="descripcion"
+      name="descripcion"
+      rows="4"
+    ><%= tarea.descripcion || '' %></textarea>
+  </div>
+
+  <div>
+    <label for="fecha_vencimiento">Fecha de Vencimiento:</label><br>
+    <input
+      type="date"
+      id="fecha_vencimiento"
+      name="fecha_vencimiento"
+      value="<%= tarea.fecha_vencimiento || '' %>"
+      required
+    >
+  </div>
+
+  <div>
+    <label for="curso_id">Curso:</label><br>
+    <select id="curso_id" name="curso_id">
+      <option value="">-- Sin Curso --</option>
+      <% cursos.forEach(curso => { %>
+        <option
+          value="<%= curso.id %>"
+          <%= tarea.curso_id === curso.id ? 'selected' : '' %>
+        ><%= curso.nombre %></option>
+      <% }) %>
+    </select>
+  </div>
+
+  <div>
+    <label>
+      <input
+        type="checkbox"
+        name="completada"
+        value="true"
+        <%= tarea.completada ? 'checked' : '' %>
+      >
+      Completada
+    </label>
+  </div>
+
+  <button type="submit">Guardar</button>
+</form>

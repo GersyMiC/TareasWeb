@@ -1,0 +1,27 @@
+<table>
+  <thead>
+    <tr>
+      <th>Título</th>
+      <th>Curso</th>
+      <th>Vencimiento</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% tareas.forEach(tarea => { %>
+      <tr>
+        <td><%= tarea.titulo %></td>
+        <td><%= tarea.curso ? tarea.curso.nombre : '—' %></td>
+        <td><%= tarea.fecha_vencimiento %></td>
+        <td><%= tarea.completada ? 'Completada' : 'Pendiente' %></td>
+        <td>
+          <a href="/edit/<%= tarea.id %>">Editar</a>
+          <form action="/delete/<%= tarea.id %>" method="post" style="display:inline">
+            <button type="submit">Eliminar</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
