@@ -1,10 +1,36 @@
-<% /* filtros de tareas */ %>
+<% /* filtros de estado */ %>
 <nav class="filtros">
-  <a href="/"                 class="<%= !filter ? 'activo' : '' %>">Todas</a>
-  <a href="/?filter=pendientes"   class="<%= filter==='pendientes' ? 'activo' : '' %>">Pendientes</a>
-  <a href="/?filter=completadas"  class="<%= filter==='completadas' ? 'activo' : '' %>">Completadas</a>
-  <a href="/?filter=vencidas"     class="<%= filter==='vencidas' ? 'activo' : '' %>">Vencidas</a>
+  <a href="?<%= filterCurso ? 'curso_id='+filterCurso+'&' : '' %>" class="<%= !filter ? 'activo' : '' %>">
+    Todas
+  </a>
+  <a href="?<%= filterCurso ? 'curso_id='+filterCurso+'&' : '' %>filter=pendientes" class="<%= filter==='pendientes' ? 'activo' : '' %>">
+    Pendientes
+  </a>
+  <a href="?<%= filterCurso ? 'curso_id='+filterCurso+'&' : '' %>filter=completadas" class="<%= filter==='completadas' ? 'activo' : '' %>">
+    Completadas
+  </a>
+  <a href="?<%= filterCurso ? 'curso_id='+filterCurso+'&' : '' %>filter=vencidas" class="<%= filter==='vencidas' ? 'activo' : '' %>">
+    Vencidas
+  </a>
 </nav>
+
+<% /* filtro por curso */ %>
+<form method="get" class="filtro-curso">
+  <!-- Conserva el filter de estado si existe -->
+  <% if (filter) { %>
+    <input type="hidden" name="filter" value="<%= filter %>">
+  <% } %>
+
+  <label for="curso_id">Curso:</label>
+  <select name="curso_id" id="curso_id" onchange="this.form.submit()">
+    <option value="">-- Todos los cursos --</option>
+    <% cursos.forEach(c => { %>
+      <option value="<%= c.id %>" <%= filterCurso==c.id ? 'selected' : '' %>>
+        <%= c.nombre %>
+      </option>
+    <% }) %>
+  </select>
+</form>
 
 <table>
   <thead>

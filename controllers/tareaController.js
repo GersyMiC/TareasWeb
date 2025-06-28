@@ -4,9 +4,11 @@ const { Tarea, Curso } = require('../models');
 
 exports.list = async (req, res) => {
   try {
-    const filter = req.query.filter;   // 'pendientes', 'completadas', 'vencidas' o undefined
+    const filter = req.query.filter;         // 'pendientes' | 'completadas' | 'vencidas'
+    const filterCurso = req.query.curso_id;  // id de curso o undefined
     const where = {};
 
+    // --- filtro por estado ---
     if (filter === 'pendientes') {
       where.completada = false;
     } else if (filter === 'completadas') {
@@ -16,13 +18,22 @@ exports.list = async (req, res) => {
       where.fecha_vencimiento = { [Op.lt]: new Date() };
     }
 
-    const tareas = await Tarea.findAll({
-      where,
-      include: [{ model: Curso, as: 'curso' }],
-      order: [['fecha_vencimiento', 'ASC']],
-    });
+    // --- filtro por curso ---
+    if (filterCurso) {
+      where.curso_id = filterCurso;
+    }
 
-    res.render('index', { tareas, filter });
+    // obtener datos
+    const [tareas, cursos] = await Promise.all([
+      Tarea.findAll({
+        where,
+        include: [{ model: Curso, as: 'curso' }],
+        order: [['fecha_vencimiento', 'ASC']],
+      }),
+      Curso.findAll({ order: [['nombre', 'ASC']] })
+    ]);
+
+    res.render('index', { tareas, cursos, filter, filterCurso });
   } catch (error) {
     console.error('Error al listar tareas:', error);
     res.status(500).send('Error al obtener tareas');
